@@ -1,5 +1,5 @@
 define check_packages_deps
-_current_deps := libnbd-bin nbdkit packer fuse2fs $(1)
+_current_deps := libnbd-bin nbdkit fuse2fs $(1)
 _focal_deps := libnbd0 nbdfuse nbdkit packer fuse2fs $(2)
 
 print-deps:
