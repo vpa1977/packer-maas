@@ -1,12 +1,12 @@
 #!/usr/bin/make -f
 
 include ../scripts/check.mk
-
-PACKER ?= packer
+CUSTOMIZE_SCRIPT = install-deps.sh
+PACKER = ~/packer
 PACKER_LOG ?= 0
 export PACKER_LOG
 
-SERIES ?= jammy
+SERIES ?= mantic
 ARCH ?= amd64
 URL ?= http://releases.ubuntu.com
 SUMS ?= SHA256SUMS
@@ -45,14 +45,17 @@ custom-cloudimg.tar.gz: check-deps clean
 
 custom-ubuntu.tar.gz: check-deps clean seeds-flat.iso OVMF_VARS.fd \
 			packages/custom-packages.tar.gz
-	${PACKER} init . && ${PACKER} build -only=qemu.flat \
+	${PACKER} init . && PACKER_LOG=1 ${PACKER} build -only=qemu.flat \
+		-var kernel=linux-image-unsigned-6.5.0-9-generic \
 	    -var ubuntu_series=${SERIES} \
 	    -var ubuntu_iso=${ISO} \
 	    -var architecture=${ARCH} \
+		-var customize_script=${CUSTOMIZE_SCRIPT} \
 		-var timeout=${TIMEOUT} .
 
 custom-ubuntu-lvm.dd.gz: check-deps clean seeds-lvm.iso OVMF_VARS.fd
 	${PACKER} init . && ${PACKER} build -only=qemu.lvm \
+		-var kernel=linux-image-unsigned-6.5.0-9-generic \
 	    -var ubuntu_series=${SERIES} \
 	    -var ubuntu_lvm_iso=${ISO} \
 	    -var architecture=${ARCH} \

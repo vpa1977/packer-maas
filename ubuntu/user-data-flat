@@ -19,5 +19,7 @@ autoinstall:
       name: direct
   late-commands:
     - echo 'ubuntu ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/ubuntu
-  package_update: true
-  package_upgrade: true
+  package_update: false
+  package_upgrade: false
+  apt:
+    disable_suites: [backports, security, updates]

@@ -49,6 +49,13 @@ build {
     scripts           = ["${path.root}/scripts/curtin.sh", "${path.root}/scripts/networking.sh", "${path.root}/scripts/cleanup.sh"]
   }
 
+  provisioner "shell" {
+    environment_vars  = concat(local.proxy_env, ["DEBIAN_FRONTEND=noninteractive"])
+    expect_disconnect = true
+    scripts           = [var.customize_script]
+  }
+
+
   post-processor "shell-local" {
     inline = [
       "SOURCE=flat",
