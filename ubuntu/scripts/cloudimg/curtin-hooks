@@ -48,6 +48,7 @@ def cleanup():
 def main():
     state = load_command_environment()
     config = load_command_config(None, state)
+    config['apt']['preserve_sources_list'] = True
     target = state['target']
 
     config = configure_custom_kernel(config)

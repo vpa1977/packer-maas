@@ -6,17 +6,17 @@ source "qemu" "flat" {
   format          = "raw"
   headless        = var.headless
   http_directory  = var.http_directory
-  iso_checksum    = "file:http://releases.ubuntu.com/${var.ubuntu_series}/SHA256SUMS"
+  iso_checksum    = "file:http://localhost:9999/SHA256SUMS"
   iso_target_path = "packer_cache/${var.ubuntu_series}.iso"
-  iso_url         = "https://releases.ubuntu.com/${var.ubuntu_series}/${var.ubuntu_iso}"
+  iso_url         = "http://localhost:9999/${var.ubuntu_series}-live-server-amd64.iso"
   memory          = 2048
   qemuargs = [
     ["-vga", "qxl"],
     ["-device", "virtio-blk-pci,drive=drive0,bootindex=0"],
     ["-device", "virtio-blk-pci,drive=cdrom0,bootindex=1"],
     ["-device", "virtio-blk-pci,drive=drive1,bootindex=2"],
-    ["-drive", "if=pflash,format=raw,readonly=on,file=/usr/share/OVMF/OVMF_CODE.fd"],
-    ["-drive", "if=pflash,format=raw,file=OVMF_VARS.fd"],
+    ["-drive", "if=pflash,format=raw,id=ovmf_code,readonly=on,file=/usr/share/${lookup(local.uefi_imp, var.architecture, "")}/${lookup(local.uefi_imp, var.architecture, "")}_CODE.fd"],
+    ["-drive", "if=pflash,format=raw,id=ovmf_vars,file=${lookup(local.uefi_imp, var.architecture, "")}_VARS.fd"],
     ["-drive", "file=output-flat/packer-flat,if=none,id=drive0,cache=writeback,discard=ignore,format=raw"],
     ["-drive", "file=seeds-flat.iso,format=raw,cache=none,if=none,id=drive1,readonly=on"],
     ["-drive", "file=packer_cache/${var.ubuntu_series}.iso,if=none,id=cdrom0,media=cdrom"]

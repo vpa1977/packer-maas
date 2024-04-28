@@ -101,6 +101,8 @@ def cleanup():
 def main():
     state = load_command_environment()
     config = load_command_config(None, state)
+    config['apt']['preserve_sources_list'] = True
+
     target = state['target']
 
     curthook(config, target, state)

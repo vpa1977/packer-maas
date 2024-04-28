@@ -17,9 +17,10 @@ autoinstall:
       size: 0
     layout:
       name: direct
+  early-commands:
+    - apt-get install -y isc-dhcp-client net-tools
   late-commands:
     - echo 'ubuntu ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/ubuntu
-  package_update: false
-  package_upgrade: false
+    - apt-get install -y isc-dhcp-client net-tools
   apt:
     disable_suites: [backports, security, updates]

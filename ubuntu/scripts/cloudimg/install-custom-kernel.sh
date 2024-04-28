@@ -24,6 +24,7 @@ if  [ -z  "${CLOUDIMG_CUSTOM_KERNEL}" ]; then
 fi
 
 echo "Installing custom kernel ${CLOUDIMG_CUSTOM_KERNEL}"
+apt-get update
 apt-get install -y ${CLOUDIMG_CUSTOM_KERNEL}
 
 # Record the installed kernel version, so that the curtin hook knows about it.
